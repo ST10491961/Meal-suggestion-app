@@ -1,0 +1,53 @@
+import android.os.Bundle
+import android.widget.Button
+import android.widget.EditText
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import java.util.Locale
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var timeOfDayInput: EditText
+    private lateinit var suggestButton: Button
+    private lateinit var resetButton: Button
+    private lateinit var mealSuggestionOutput: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        // Initialize UI components
+        timeOfDayInput = findViewById(R.id.timeOfDayInput)
+        suggestButton = findViewById(R.id.suggestButton)
+        resetButton = findViewById(R.id.resetButton)
+        mealSuggestionOutput = findViewById(R.id.mealSuggestionOutput)
+
+        // Suggest Meal Button Listener
+        suggestButton.setOnClickListener {
+            val timeOfDay = timeOfDayInput.text.toString().trim().toLowerCase(Locale.ROOT)
+
+            // Define meals based on time of day
+            val mealSuggestions = when (timeOfDay) {
+                "morning" -> listOf("Eggs", "Pancakes", "Oatmeal")
+                "mid-morning" -> listOf("Fruit", "Granola Bar", "Yogurt")
+                "afternoon" -> listOf("Sandwich", "Salad", "Soup")
+                "mid-afternoon" -> listOf("Nuts", "Smoothie", "Crackers")
+                "dinner" -> listOf("Pasta", "Grilled Chicken", "Stir-fried Veggies")
+                else -> null
+            }
+
+            // Display result or error message
+            if (mealSuggestions != null) {
+                mealSuggestionOutput.text = "Suggested meal: ${mealSuggestions.random()}"
+            } else {
+                mealSuggestionOutput.text = "Please enter a valid time: Morning, Mid-morning, Afternoon, Mid-afternoon, or Dinner."
+            }
+        }
+
+        // Reset Button Listener
+        resetButton.setOnClickListener {
+            timeOfDayInput.text.clear()
+            mealSuggestionOutput.text = ""
+        }
+    }
+}
